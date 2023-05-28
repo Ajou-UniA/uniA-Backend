@@ -34,19 +34,38 @@ public class PlaceController {
 
     /**
      * 식당 좋아요 수 증가
-     * [PATCH] /api/v1/restaurant/{id}
-     * @param id 식당 ID
+     * [PATCH] /api/v1/restaurant/{placeName}/{memberId}
+     * @param placeName 식당 이름
+     * @param memberId 회원 ID
      * @return ResponseEntity<String>
      */
-    @PatchMapping("/{id}")
-    public ResponseEntity<String> increaseLikeCount(@PathVariable Long id){
-        PlaceDto placeDto = placeService.findByPlaceId(id);
+    @PatchMapping("/{placeName}/{memberId}")
+    public ResponseEntity<String> increaseLikeCount(@PathVariable String placeName, @PathVariable Long memberId) throws Exception {
+        PlaceDto placeDto = placeService.findByPlaceName(placeName);
         if (placeDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Place not found");
         }
-        placeService.increaseLikeCount(id);
+        placeService.increaseLikeCount(placeName, memberId);
         return ResponseEntity.status(HttpStatus.OK).body("Like increase");
     }
+
+    /**
+     * 식당 좋아요 수 감소
+     * [PATCH] /api/v1/restaurant/{placeName}/unlike/{memberId}
+     * @param placeName 식당 placeName
+     * @param memberId 회원 ID
+     * @return ResponseEntity<String>
+     */
+    @PatchMapping("/{placeName}/unlike/{memberId}")
+    public ResponseEntity<String> decreaseLikeCount(@PathVariable String placeName, @PathVariable Long memberId) throws Exception {
+        PlaceDto placeDto = placeService.findByPlaceName(placeName);
+        if (placeDto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Place not found");
+        }
+        placeService.decreaseLikeCount(placeName, memberId);
+        return ResponseEntity.status(HttpStatus.OK).body("Like decrease");
+    }
+
 
     /**
      * 식당 좋아요 수 순으로 조회
