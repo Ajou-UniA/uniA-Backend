@@ -32,7 +32,7 @@ spring:
     port: 6379
 
   # spring data jpa 설정
-  jpa:
+  jpa:ㄱ
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
     show-sql: true

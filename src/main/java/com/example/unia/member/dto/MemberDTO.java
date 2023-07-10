@@ -32,6 +32,9 @@ public class MemberDTO {
     @NotBlank(message = "Please confirm your password")
     private String memberConfirmPassword; // 비밀번호 확인
 
+    @NotBlank(message = "Please enter your nickname")
+    private String nickname; // 닉네임
+
     public static MemberDTO toMemberDTO(MemberEntity memberEntity){
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setLastName(memberEntity.getLastName());
@@ -40,6 +43,7 @@ public class MemberDTO {
         memberDTO.setMemberMajor(memberEntity.getMemberMajor());
         memberDTO.setMemberEmail(memberEntity.getMemberEmail());
         memberDTO.setMemberPassword(memberEntity.getMemberPassword());
+        memberDTO.setNickname(memberEntity.getNickname()); // 닉네임 추가
         return memberDTO;
     }
 
@@ -50,6 +54,7 @@ public class MemberDTO {
         memberInfoDTO.setMemberId(this.memberId);
         memberInfoDTO.setMemberMajor(this.memberMajor);
         memberInfoDTO.setMemberEmail(this.memberEmail);
+        memberInfoDTO.setNickname(this.nickname); // 닉네임 추가
         return memberInfoDTO;
     }
 

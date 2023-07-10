@@ -34,6 +34,9 @@ public class MemberEntity {
     @Column(nullable = false)
     private String memberPassword; // 비밀번호
 
+    @Column(nullable = false)
+    private String nickname; // 닉네임
+
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     private List<AssignmentEntity> assignmentList = new ArrayList<>();
 
@@ -45,6 +48,7 @@ public class MemberEntity {
         memberEntity.setMemberMajor(memberDTO.getMemberMajor());
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setNickname(memberDTO.getNickname()); // 닉네임 추가
         return memberEntity;
     }
 

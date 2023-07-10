@@ -23,9 +23,10 @@ public class MemberController {
     private final MemberService memberService;
 
 
-     /**
+    /**
      * Login 실패 (test)
      * [GET] /api/v1/member/login/fail
+     *
      * @return ResponseEntity
      */
     @GetMapping("/login/fail")
@@ -38,6 +39,7 @@ public class MemberController {
     /**
      * Login 성공 (test)
      * [GET] /api/v1/member/login/success
+     *
      * @return ResponseEntity
      */
     @GetMapping("/login/success")
@@ -51,13 +53,14 @@ public class MemberController {
     /**
      * 마이페이지 조회
      * [GET] /api/v1/member/{memberId}
+     *
      * @param memberId 학번
      * @return ResponseEntity body(memberInfoDTO)
      */
     @GetMapping("/{memberId}")
-    public ResponseEntity<?> findByMemberId(@PathVariable Long memberId){
+    public ResponseEntity<?> findByMemberId(@PathVariable Long memberId) {
         MemberDTO memberDTO = memberService.findById(memberId);
-        if (memberDTO == null){
+        if (memberDTO == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Member does not exist");
         }
 
@@ -76,7 +79,7 @@ public class MemberController {
     @PatchMapping("/update/{memberId}")
     public ResponseEntity<MemberDTO> updateMemberDto(@PathVariable Long memberId, @RequestBody MemberUpdateDTO Dto) {
         MemberDTO findMember = memberService.findById(memberId);
-        if (findMember == null||Dto==null)  return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (findMember == null || Dto == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         MemberDTO updateinfo = memberService.updateinfo(Dto, memberId);
         return ResponseEntity.status(HttpStatus.OK).body(updateinfo);
     }
@@ -84,6 +87,7 @@ public class MemberController {
     /**
      * 비밀번호 변경
      * [PATCH] /api/v1/member/{memberId}
+     *
      * @param memberId 학번
      * @param password 비밀번호
      * @return ResponseEntity body(existMember)
@@ -111,18 +115,41 @@ public class MemberController {
     }
 
 
-
     /**
      * 회원 탈퇴
      * [DELETE] /api/v1/member/{memberId}
+     *
      * @param memberId 학번
      * @return ResponseEntity body("Delete Success")
      */
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<?> deleteById(@PathVariable Long memberId){
+    public ResponseEntity<?> deleteById(@PathVariable Long memberId) {
         memberService.deleteById(memberId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Delete Success");
     }
 
+    /**
+     * 닉네임 변경
+     * [PATCH] /api/v1/member/{memberId}/nickname
+     *
+     * @param memberId 학번
+     * @return ResponseEntity body(updatedMember)
+     */
+    @PatchMapping("/{memberId}/nickname")
+    public ResponseEntity<MemberDTO> updateNickname(@PathVariable Long memberId, @RequestParam("newNickname") String newNickname) {
 
+        if (newNickname == null || newNickname.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        MemberDTO updatedMember = memberService.updateNickname(memberId, newNickname);
+
+
+        if (updatedMember == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedMember);
+
+    }
 }

@@ -74,6 +74,19 @@ public class MemberService implements UserDetailsService {
         memberRepository.deleteById(id);
     }
 
+    @Transactional
+    public MemberDTO updateNickname(Long memberId, String newNickName){
+        Optional<MemberEntity> memberEntityOptional = memberRepository.findById(memberId);
+
+        if (memberEntityOptional.isEmpty()) {
+            return null;
+        }
+
+        MemberEntity memberEntity = memberEntityOptional.get();
+        memberEntity.setNickname(newNickName);
+        return MemberDTO.toMemberDTO(memberRepository.save(memberEntity));
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
